@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TrainConsistManagementApp {
@@ -22,18 +23,21 @@ public class TrainConsistManagementApp {
         passengerBogies.add(new Bogie("Sleeper", 72));
         passengerBogies.add(new Bogie("AC Chair", 56));
         passengerBogies.add(new Bogie("First Class", 24));
-        passengerBogies.add(new Bogie("Second Sitting", 70));
+        passengerBogies.add(new Bogie("Sleeper", 70));
+        passengerBogies.add(new Bogie("AC Chair", 58));
 
-        List<Bogie> highCapacityBogies = passengerBogies.stream()
-                .filter(bogie -> bogie.capacity > 60)
-                .collect(Collectors.toList());
+        Map<String, List<Bogie>> groupedBogies = passengerBogies.stream()
+                .collect(Collectors.groupingBy(bogie -> bogie.name));
 
-        System.out.println("Filtered passenger bogies (capacity > 60):");
-        for (Bogie bogie : highCapacityBogies) {
-            System.out.println(bogie.name + " -> " + bogie.capacity);
+        System.out.println("Bogies grouped by type:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + ":");
+            for (Bogie bogie : entry.getValue()) {
+                System.out.println("  capacity -> " + bogie.capacity);
+            }
         }
 
         System.out.println("Original passenger bogie count: " + passengerBogies.size());
-        System.out.println("Filtered passenger bogie count: " + highCapacityBogies.size());
+        System.out.println("Grouped category count: " + groupedBogies.size());
     }
 }
